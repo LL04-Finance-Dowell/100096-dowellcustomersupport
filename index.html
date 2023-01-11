@@ -1,39 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Chat Window</title>
-</head>
-<body>
-    
-
-    <sectio>
-        <button class="chat-btn"> 
-            <i class="material-icons"> comment </i>
-        </button>
-
-        <div class="chat-popup">
-            <div class="badge">1</div>
-            <div class="chat-area">
-             <div class="income-msg">
-                 <img src="img/person.png" class="avatar" alt="">
-                 <span class="msg"> Hi, How can I help you?</span>
-             </div>   
+<html>
+   <head>
+      <title>Chat UI Design</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+   </head>
+   <body>
+      <div class="chat">
+         <div class="">
+            <div class="">
+               
             </div>
-
-            <div class="input-area">
-                <input type="text">
-                <button id="emoji-btn"> &#127773;</button>
-                <button class="submit"> <i class="material-icons"> send</i></button>
+            <div class="contacts">
+               <ul>
+                  
+               </ul>
             </div>
-        </div>
-    </section>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js"></script>
-    <script src="main.js"></script>
-</body>
+         </div>
+         <div class="content">
+            <div class="message-header">
+               <div class="user-info">
+                  <img src="img/avatar.png">
+                  <div class="user">
+                     <div class="name">user-info</div>
+                     <div class="time"></div>
+                  </div>
+               </div>
+               <div class="actions">
+                  <ul>
+                     
+                     <li>
+                        
+                  </ul>
+               </div>
+            </div>
+            <div class="message-content">
+               <div class="message me">
+                  <div class="bubble">
+                     Hello, 
+                  </div>
+                  
+               </div>
+               <div class="message">
+                  <div class="bubble">
+                     How are you?
+                  </div>
+                  
+               </div>
+            </div>
+            <div class="message-form">
+               <ul>
+                  <li class="emoji-btn">
+                     <a href="">
+                     <i class="fa fa-laugh"></i>
+                     </a>
+                  </li>
+                  <li class="input">							
+                     <input type="text" placeholder="type your message here......">
+                  </li>
+                        <button class="submit"><i class="materal-icons">send</i></button>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </body>
 </html>
