@@ -175,11 +175,11 @@ body {
 
 #chat-message-list {
     grid-area: chat-message-list;
-    display: flex;
+    display:flex;
     flex-direction: column;
     margin-top: 20px;
     padding: 0 20px;
-    overflow-y: scroll;
+    overflow-y:scroll;
 }
 
 .message-row {
