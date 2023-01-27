@@ -57,3 +57,16 @@ def send_message(request, pk):
     )
     messages = Message.objects.filter(author=room.authority_portfolio)
     return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk})
+
+
+
+def getMessages(request,  pk):
+    room =Room.objects.get(pk=pk)
+    room_details = Room.objects.get(name=room)
+    messages = Message.objects.filter(room=room)
+    return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk})
+    
+
+
+
+
