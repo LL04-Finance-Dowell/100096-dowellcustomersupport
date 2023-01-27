@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Chat App</title>
-	<link rel="stylesheet" type="text/css" media="screen" href="Chat.css" >
-	<script defer src="chat.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'Chat.css' %}" >
+	<script defer src="{% static 'chat.js' %}"></script>
 </head>
 <body>
     <div id="chat-container">
@@ -14,14 +15,14 @@
         </div>
         <div id="conversation-list">
         	<div class="conversation active">
-        		<img src="img/avatar.png" alt="jude">
+        		<img src="{% static 'img/avatar.png' %}" alt="room">
         		<div class="title-text">
         			Room 001
         		</div>
         	</div>
 
         	<div class="conversation">
-        		<img src="img/avatar.png" alt="jude">
+        		<img src="{% static 'img/avatar.png' %}" alt="room">
         		<div class="title-text">
         			Room 002
         		</div>
@@ -29,7 +30,7 @@
         	</div>
 
         	<div class="conversation">
-        		<img src="img/avatar.png" alt="jude">
+        		<img src="{% static 'img/avatar.png' %}" alt="room">
         		<div class="title-text">
         			Room 003
         		</div>
@@ -37,7 +38,7 @@
         	</div>
 
         	<div class="conversation">
-        		<img src="img/avatar.png" alt="jude">
+        		<img src="{% static 'img/avatar.png' %}" alt="room">
         		<div class="title-text">
         			Room 004
         		</div>
