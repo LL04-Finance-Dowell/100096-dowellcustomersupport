@@ -4,6 +4,8 @@ from django.db import models
 
 class Portfolio(models.Model):
     portfolio_name = models.CharField(max_length=200, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    organization = models.CharField(max_length=200, blank=True, null=True)
 
 
 

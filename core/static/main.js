@@ -28,7 +28,6 @@ chatBtn.addEventListener('click', ()=>{
 // send msg 
 submitBtn.addEventListener('click', ()=>{
     let userInput = inputElm.value;
-
     let temp = `<div class="out-msg">
     <span class="my-msg">${userInput}</span>
     <img src="{% static 'img/pic.png' %}" class="avatar">
@@ -38,6 +37,7 @@ submitBtn.addEventListener('click', ()=>{
     inputElm.value = '';
 
 })
+
 
 
 

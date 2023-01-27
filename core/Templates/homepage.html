@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for portfolio in portfolios %}
+        {% if portfolio %}
+            <ul>
+                <li>{{ portfolio.portfolio_name }}</li>
+                <span> 
+                    {% if portfolio.is_staff %} 
+                    {% else %} 
+                    Room <a href="/room/{{ portfolio.id }}">Open Room</a> 
+                    {% endif %}
+                </span>
+                <li>{{ portfolio.organization }}</li>
+            </ul>
+        {% else %}
+            <p>no portfolio</p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
