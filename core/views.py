@@ -34,26 +34,54 @@ def post(request):
 
 def portfolio(request, pk):
     portfolio = Portfolio.objects.get(pk=pk)
-    try:
-        room = Room.objects.filter(authority_portfolio=portfolio).first()
-        messages = Message.objects.filter(room=room)
-    except Room.DoesNotExist:
-        Room.objects.create(
+    room = Room.objects.filter(authority_portfolio=portfolio).first()
+    if room is None:
+        room = Room.objects.create(
             room_name=portfolio.portfolio_name,
             authority_portfolio=portfolio,
             organization=portfolio.organization
         )
-
-    return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk})
+        return render(request, 'room.html')
+    else:
+        messages = Message.objects.filter(room=room)
+        return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk, 'author':room.authority_portfolio})
 
 # GET and POST method for sending and receiving messages in room
+#admin
 def send_message(request, pk):
-    message = request.POST.get('message')
+    portfolio = Portfolio.objects.filter(is_staff=True).first()
+    
     room = Room.objects.get(pk=pk)
-    Message.objects.create(
-        room=room,
-        message=message,
-        author=room.authority_portfolio
-    )
-    messages = Message.objects.filter(author=room.authority_portfolio)
-    return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk})
+    messages = Message.objects.filter(room=room)
+
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        Message.objects.create(
+            room=room,
+            message=message,
+            author=portfolio,
+        )
+    return render(
+        request, 'room.html', 
+        {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk, 'author':room.authority_portfolio},
+        )
+
+def my_room(request, portfolio_name):
+    
+    try:
+        portfolio = Portfolio.objects.get(portfolio_name=portfolio_name)
+        room = Room.objects.filter(authority_portfolio=portfolio).first()
+        messages = Message.objects.filter(room=room)
+        # messages = Message.objects.filter(author=portfolio)
+    except Portfolio.DoesNotExist:
+        return HttpResponse('Portfolio does not exist')
+
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        Message.objects.create(
+            room=room,
+            message=message,
+            author=portfolio,
+        )
+    return render(request, 'my_room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk, 'author':room.authority_portfolio})
+    
