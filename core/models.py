@@ -6,6 +6,9 @@ class Portfolio(models.Model):
     portfolio_name = models.CharField(max_length=200, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     organization = models.CharField(max_length=200, blank=True, null=True)
+    
+    def __str__(self) -> str:
+        return self.portfolio_name
 
 
 

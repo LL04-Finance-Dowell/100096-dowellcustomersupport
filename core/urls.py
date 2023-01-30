@@ -8,5 +8,5 @@ urlpatterns =[
     path('homepage/', views.HomeView.as_view(), name= 'homepage'),
     path('room/<int:pk>/', views.portfolio, name= 'portfolio'),
     path('send/<int:pk>/', views.send_message, name= 'send_message'),
-    path('getMessages/<int:pk>/', views.getMessages, name="getMessages")
+    path('myroom/<str:portfolio_name>/', views.my_room, name= 'my_room')
 ]
