@@ -6,6 +6,7 @@ class Portfolio(models.Model):
     portfolio_name = models.CharField(max_length=200, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     organization = models.CharField(max_length=200, blank=True, null=True)
+    product = models.CharField( max_length=200, blank=True, null=True)
     
     def __str__(self) -> str:
         return self.portfolio_name
@@ -20,8 +21,8 @@ class Room(models.Model):
     authority_portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, blank=True, null=True)
     organization = models.CharField(max_length=200, blank=True, null=True)
 
-    def str(self):
-        return f'{self.room_name} - {self.organization}'
+    def __str__(self) -> str:
+        return self.room_name
 
 
 class Message(models.Model):
@@ -32,5 +33,5 @@ class Message(models.Model):
     read = models.BooleanField(default=False)
     author = models.ForeignKey(Portfolio, on_delete=models.CASCADE, blank=True, null=True)
 
-    def str(self):
-        return f'{self.room.room_name} - {self.author}'
+    def __str__(self) -> str:
+        return self.room.room_name

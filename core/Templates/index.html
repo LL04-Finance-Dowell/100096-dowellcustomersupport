@@ -32,11 +32,14 @@
              </div>   
             </div>
 
-            <div class="input-area">
-                <input type="text">
-                <button id="emoji-btn"> &#127773;</button>
-                <button class="submit"> <i class="material-icons"> send</i></button>
-            </div>
+            {% for message in messages %}
+     <p>{{ message.message }} - {{message.author}}</p>
+    {% endfor %}
+    <form action="/myroom/{{portfolio.portfolio_name}}/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="message">
+        <button type="submit">Send</button>
+    </form>
         </div>
     </section>
 
