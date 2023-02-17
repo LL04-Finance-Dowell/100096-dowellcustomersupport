@@ -35,6 +35,12 @@ p{
     font-size: 2rem;
 }
 
+.scroller {
+  overflow-y: scroll;
+scrollbar-color: #ffbc00 #7a7a7a;
+scrollbar-width: thin;
+}
+
 
 .chat-btn{
     position: fixed;
@@ -70,6 +76,24 @@ p{
     border-radius: 10px;
 }
 
+
+.chat-popup-login{
+    display: flex;
+
+    bottom:80px;
+    right:120px;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    border-radius: 10px;
+}
+
+
 .show{
     display: flex;
 }
@@ -101,10 +125,10 @@ p{
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
 }
 
-.badge{
-    position: absolute;
-    width: 35px;
-    height: 30px;
+.chat-badge{
+
+    width: 25px;
+    height: 25px;
     background-color: red;
     color:white;
     border-radius: 50%;
@@ -115,7 +139,7 @@ p{
     right: -10px;
 }
 
-.input-area{
+.chat-input-area{
     position: relative;
     display: flex;
     justify-content: center;
@@ -138,7 +162,7 @@ input[type="text"]{
     opacity:0.5;
 }
 
-.submit{
+.chat-submit{
     padding: 0.25rem 0.5rem;
     margin-left: 0.5rem;
     background-color: green;
@@ -186,7 +210,13 @@ input[type="text"]{
 
 
 
-
+.modal-header{
+    height: 30px;background-color: rgb(166, 223, 166);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
 
 
 
@@ -195,21 +225,24 @@ input[type="text"]{
 .modal{
     border-radius: 5px;
 }
-.modal-header{
-    height: 30px;
-    background-color: rgb(132, 132, 238);
+.chat-modal-header{
+    height: 30px;background-color: rgb(166, 223, 166);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
 }
 .modal-header>h6{
-    display: inline-block;  		
+    display: inline-block;
     margin-right: 200px;
 }
-.modal-header-close{
+/*.modal-header-close{
     padding-right: 10px;
   padding-top: 16px;
-}
+}*/
 .modal-header-close:hover{
     cursor: pointer;
-}  	
+}
 .no-margin-bottom{
     margin-bottom: 0;
 }

@@ -1,0 +1,114 @@
+{% load static %}
+<!doctype HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <title>Chat</title>
+    </head>
+
+    <body>
+        <div class="chat-popup-login">
+
+                <div class="chat-modal-header blue darken-2 white-text" style="display:none">
+                  <!-- h5 align="left">Room - {{room_pk}}</h5 -->
+                  {{ room_pk|json_script:"room_id" }}
+                  {{ session_id|json_script:"session_id" }}
+
+                  <div class="chat-badge"><i class="modal-close material-icons right white-text modal-header-close">close</i></div>
+                  <!--h6>{{product}}</h6-->
+                </div>
+            <div id="chat-area" class="chat-area scroller">
+                 <div class="income-msg">
+                     <img src="/static/img/pic.png" class="avatar" alt="">
+                     <span class="msg"> Hey, How may I help you?</span>
+                 </div>
+                 {% for msg in messages %}
+                    {% if msg.author.session_id == session_id %}
+                        <div class="out-msg">
+                            <span class="my-msg">{{msg.message}}</span>
+                            <!--img src="{% static 'img/pic.png' %}" class="avatar"-->
+                            </div>
+                    {% else %}
+                     <div class="income-msg">
+                         <img src="/static/img/pic.png" class="avatar" alt="" >
+                         <span class="msg">{{msg.message}}</span>
+                     </div>
+                     {% endif %}
+                {% endfor %}
+
+
+
+            </div>
+
+            <div class="chat-input-area">
+                <input id="chat-input" class="chat-input" type="text">
+                <button id="emoji-btn"> 🌝</button>{% csrf_token %}
+                <div id="chat_django_csrf_token" style="display: none">{% csrf_token %}</div>
+                <button id="chat-submit" class="chat-submit"> <i class="material-icons">send</i></button>
+            </div>
+        </div>
+    </body>
+    {% block extrascripts %}
+
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.1.1/dist/index.min.js"></script>
+    <script type="text/javascript" src="{% static 'main_2.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            console.log("In Before send message request to server.")
+            //  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const csrftoken = document.getElementById('chat_django_csrf_token').children[0].value;
+            const room_id = JSON.parse(document.getElementById('room_id').textContent);
+            const session_id = JSON.parse(document.getElementById('session_id').textContent);
+            console.log("room_id", room_id)
+            //  const chat_input = document.getElementById("chat-input");
+            const chat_area = document.getElementById("chat-area");
+            function reloadChat(){
+                console.log("In Before send message request to server.")
+                $.ajax({
+                    type: 'GET',
+                    url : `https://100096.pythonanywhere.com/send/`+room_id+`/`,
+                    headers: {'X-CSRFToken': csrftoken},
+                    success: function(response){
+                        console.log(response);
+                        $("#chat-area").empty();
+
+                        for (var messg of response.messages){
+                            let temp;
+                            console.log(messg.author.session_id, session_id)
+                            if(messg.author.session_id === session_id){
+                                temp = `<div class="out-msg">
+                                    <span class="my-msg">${messg.message}</span>
+
+                                    </div>`;
+                            } else {
+                                temp = `<div class="income-msg">
+                                <img src="{% static 'img/pic.png' %}" class="avatar">
+                                <span class="msg">${messg.message}</span>
+                                </div>`;
+                            }
+
+                            //var temp="<div class='container darker outcoming-msg'><b>"+response.messages[key].user+"</b><p>"+response.messages[key].value+"</p><span class='time-left'>"+response.messages[key].date+"</span></div>";
+                            $("#chat-area").append(temp);
+                        }
+                    },
+                    error: function(response){
+                        // alert('An error occurred')
+                    },
+
+                });
+            }
+            chat_area.onscroll = reloadChat();
+            setInterval(reloadChat, 10000);
+        })
+    </script>
+
+    {% endblock %}
+
+</html>

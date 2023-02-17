@@ -21,6 +21,14 @@ body {
     place-items: center;
 }
 
+.scroller {
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+
+
+
 #chat-container {
     display: grid;
     grid:
@@ -40,7 +48,6 @@ body {
 
 #search-container,
 #conversation-list,
-#conversation-list1,
 #new-message-container {
     background: #eee;
 }
@@ -81,16 +88,8 @@ body {
     grid-area: conversation-list;
     overflow-y: scroll;
 }
-#conversation-list1 {
-    grid-area: conversation-list;
-    overflow-y: scroll;
-}
-#conversation-list2 {
-    grid-area: conversation-list;
-    overflow-y: scroll;
-}
 
-.conversation, button.conversation {
+.conversation {
 	display: grid;
 	grid-template-columns: 40px 1fr max-content;
 	grid-gap: 10px;
@@ -98,7 +97,6 @@ body {
 	font-size: 1.3rem;
 	border-bottom: 1px solid #dbdad7;
 	padding: 20px 20px 20px 15px;
-	height: 65px;
 }
 
 .conversation.active,
@@ -123,7 +121,7 @@ body {
 	padding-left: 5px;
 	white-space: nowrap;
 	overflow-x: hidden;
-	text-overflow: ellipsis; 
+	text-overflow: ellipsis;
 }
 
 
@@ -174,7 +172,7 @@ body {
     font-size: 2.0rem;
     border-radius: 0 10px 0 0;
     box-shadow: 0 1px 3px -1px;
-    width: 525px;
+    padding: 0 20px;
 }
 
 #chat-title > img {
@@ -204,7 +202,7 @@ body {
 
 .you-message {
 	justify-content: end;
-	
+
 }
 
 .you-message .message-content {
@@ -265,14 +263,13 @@ body {
     border-top: 1px solid rgba(0,0,0,0.25);
     padding-left: 42px;
     padding-right: 22px;
-	width: 525px;
 }
 
 #chat-form input {
-	width: 380px;
+	width: 580px;
     height: 40px;
 	outline: none;
-	
+
 	border: 2px solid #ddd;
 	color: #330;
 	border-radius: 6px;
@@ -311,9 +308,8 @@ body::-webkit-scrollbar {
 }
 
 .submit{
-	width: 50px;
-	height: 36px;
-	margin-left: 35rem;
+	padding: 1rem 0rem;
+	margin-left: 55rem;
 	background-color: green;
 	color:white;
 	display: flex;
@@ -322,63 +318,3 @@ body::-webkit-scrollbar {
 	border-radius: 5px;
 	opacity: 0.7;
   }
- nav{
-	width: 250px;
-	position: absolute;
-	top: 90px;
-	bottom: 100px;
-	background: rgba(248, 246, 246, 0);
-	border-radius: 10px;
-	box-shadow: 5px 7px 10px rgba(226, 221, 221, 0.5);
- }
- nav ul{
-	position:relative;
-	list-style: none;
- } 
- nav ul li a {
-	display: flex;
-	align-items: center;
-	font-family: arial;
-	font-size: 1.5em;
-	text-decoration: none;
-	text-transform: capitalize;
-	color: #000; 
-	padding: 10px 30px;
-	height: 77px;
-	transition: .5s ease;
-	border-radius: 0 30px; 
- }  
-
- nav ul li a:hover {
-	background: rgba(0,0,0,0.7);
-	color: #fff;
-
- }
- nav ul ul{
-	position: absolute;
-	left: 250px;
-	width: 150px;
-	top: 15px; 	
-	display: none;
-	background: rgba(182, 171, 184, 0.4);
-	border-radius: 5px;
-	box-shadow: 2px 2px 10px rgba(0,0,0, .1);
- }
- nav ul span{
-	position: absolute;
-	right: 20px;
-	font-size: 1.5em;
- }
- nav ul .dropdown{
-	position: relative;
- }
- nav ul .dropdown:hover ul{
-	display: initial ;
- }
-
-
-  
-
-
-
- 
