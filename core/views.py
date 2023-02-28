@@ -204,6 +204,32 @@ def support_page_view(request, *agrs, **kwargs):
     return render(request, 'support_chat_box.html', {'firstroom': firstroom, 'portfolio': portfolio, 'rooms': rooms, 'messages': messages, 'session_id': kwargs['session_id']})
 
 
+#   @dowell_login_required new
+def chatresponse_view(request, *agrs, **kwargs):
+    try:
+        portfolio = Portfolio.objects.get(session_id=kwargs['session_id'])
+    except Portfolio.DoesNotExist:
+        portfolio = Portfolio.objects.create(
+            portfolio_name=kwargs['session_id'],
+            session_id=kwargs['session_id']
+        )
+
+    #   room = Room.objects.filter(authority_portfolio__id=portfolio.id).first()
+
+    rooms = Room.objects.all()
+    for room in rooms:
+        messages = Message.objects.filter(room=room)
+        if len(messages) == 0:
+            room.delete()
+
+
+    rooms = Room.objects.all()
+    firstroom = Room.objects.all().first()
+    messages = Message.objects.all()
+
+
+    return render(request, 'chatresponse.html', {'firstroom': firstroom, 'portfolio': portfolio, 'rooms': rooms, 'messages': messages, 'session_id': kwargs['session_id']})
+
 
 @xframe_options_exempt
 def test(request):

@@ -10,6 +10,7 @@ urlpatterns =[
     path('room/<int:pk>/', views.portfolio, name= 'portfolio'),
     path('send/<int:pk>/', views.send_message_api, name= 'send_message'),
     path('support-page/<str:session_id>/', views.support_page_view, name= 'support_page'),
+    path('chatresponse/<str:session_id>/', views.chatresponse_view, name= 'chatresponse'),
 
     #path('chat/<str:session_id>/<str:product>/', views.chat_box_view, name='chat-box-view'),
 

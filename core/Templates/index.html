@@ -9,37 +9,35 @@
     <title>Chat Window</title>
 </head>
 <body>
-    
+
 
     <section>
-       
 
-        <button class="chat-btn"> 
+
+        <button class="chat-btn">
             <i class="material-icons"> comment </i>
         </button>
 
         <div class="chat-popup">
-            <div class="badge"><i class="modal-close material-icons right white-text modal-header-close">close</i></div>
-           		
-  		
                 <div class="modal-header blue darken-2 white-text">
-                  <h6 align="left">Room 001</h6>
+                    <h6 align="left">ROOM 001</h6>
+                    <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  <h6 align="left"></h6>
                 </div>
             <div class="chat-area">
              <div class="income-msg">
                  <img src="{% static 'img/pic.png' %}" class="avatar" alt="">
                  <span class="msg"> Hey,</span>Username
-             </div>   
+             </div>
             </div>
 
-            {% for message in messages %}
-     <p>{{ message.message }} - {{message.author}}</p>
-    {% endfor %}
-    <form action="/myroom/{{portfolio.portfolio_name}}/" method="POST">
-        {% csrf_token %}
-        <input type="text" name="message">
-        <button type="submit">Send</button>
-    </form>
+            <div class="input-area">
+                <input type="text" style='width: 235px' >
+                <button class="submit"> <i class="material-icons"> send</i></button>
+                
+            </div>
         </div>
     </section>
 
