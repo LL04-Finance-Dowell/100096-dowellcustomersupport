@@ -365,6 +365,9 @@ def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
 def index(request):
     return render(request, 'index.html')
 
+@xframe_options_exempt
+def chat_view(request):
+    return render(request, 'test.html')
 
 
 '''
@@ -395,7 +398,7 @@ def support_chat_view(request, *args, **kwargs):
 
 class HomeView(ListView):
     model = Portfolio
-    template_name = 'home_page.html'
+    template_name = 'homepage.html'
 
 
 #django post request
@@ -414,6 +417,7 @@ def portfolio(request, pk):
     try:
         room = Room.objects.filter(authority_portfolio=portfolio).first()
         messages = Message.objects.filter(room=room)
+        print(messages)
     except Room.DoesNotExist:
         Room.objects.create(
             room_name=portfolio.portfolio_name,

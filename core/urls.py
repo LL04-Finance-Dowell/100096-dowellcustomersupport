@@ -6,6 +6,7 @@ urlpatterns =[
     path('', views.index, name= 'index'),
     path('test/', views.test, name= 'test'),
     path('post/', views.post, name= 'post'),
+    path('chat/', views.chat_view, name='chat'),
     path('homepage/', views.HomeView.as_view(), name= 'homepage'),
     path('room/<int:pk>/', views.portfolio, name= 'portfolio'),
     path('send/<int:pk>/', views.send_message_api, name= 'send_message'),
