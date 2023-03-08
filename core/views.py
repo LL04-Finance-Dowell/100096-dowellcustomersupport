@@ -148,6 +148,31 @@ def chat_box_view(request, *args, **kwargs):
 
 
 
+@xframe_options_exempt
+def popup_box_view(request, *args, **kwargs):
+    try:
+        portfolio = Portfolio.objects.get(session_id=kwargs['session_id'])
+
+        # portfolio = Portfolio.objects.get(session_id=request.GET['session_id'])
+    except Portfolio.DoesNotExist:
+        portfolio = Portfolio.objects.create(
+            portfolio_name=kwargs['session_id'],
+            session_id=kwargs['session_id']
+        )
+
+    room = Room.objects.filter(authority_portfolio__id=portfolio.id).first()
+    if not room :
+        room = Room.objects.create(
+            room_name=portfolio.portfolio_name,
+            room_id= portfolio.session_id,
+            product=kwargs['product']
+        )
+        room.authority_portfolio.add(portfolio)
+    messages = Message.objects.filter(room=room)
+    return render(request, 'test.html', {'session_id': kwargs['session_id'], 'product': kwargs['product'], 'portfolio': portfolio, 'messages': messages, 'room_pk': room.id})
+
+
+
 
 # GET and POST API method for sending and receiving messages in room
 @csrf_exempt
@@ -367,6 +392,7 @@ def index(request):
 
 @xframe_options_exempt
 def chat_view(request):
+
     return render(request, 'test.html')
 
 

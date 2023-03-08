@@ -6,7 +6,7 @@ urlpatterns =[
     path('', views.index, name= 'index'),
     path('test/', views.test, name= 'test'),
     path('post/', views.post, name= 'post'),
-    path('chat/', views.chat_view, name='chat'),
+    path('popup_box_view/<str:product>/<str:session_id>/', views.popup_box_view, name='chat'),
     path('homepage/', views.HomeView.as_view(), name= 'homepage'),
     path('room/<int:pk>/', views.portfolio, name= 'portfolio'),
     path('send/<int:pk>/', views.send_message_api, name= 'send_message'),
@@ -14,8 +14,10 @@ urlpatterns =[
     path('chatresponse/<str:session_id>/', views.chatresponse_view, name= 'chatresponse'),
 
     #path('chat/<str:session_id>/<str:product>/', views.chat_box_view, name='chat-box-view'),
-
+    #login  chat 100014
     re_path(r'^chat/(?P<product>[0-9\w-]+)/(?:session_id=(?P<session_id>[a-z0-9])/)?$', views.chat_box_view, name='chat-box'),
+    ##
+    re_path(r'^chat/(?P<product>[0-9\w-]+)/(?:session_id=(?P<session_id>[a-z0-9])/)?$', views.popup_box_view, name='chat-box'),
     #   re_path(r'^support-chat-box/(?P<product>[0-9\w-]+)/(?:session_id=(?P<session_id>[a-z0-9]{32})/)?$', views.support_chat_box_view, name='support-chat-box'),
 
 ]
