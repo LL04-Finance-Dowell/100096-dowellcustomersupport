@@ -151,6 +151,8 @@ def chat_box_view(request, *args, **kwargs):
 @xframe_options_exempt
 def popup_box_view(request, *args, **kwargs):
     try:
+        print(kwargs['session_id'])
+        print(kwargs['product'])
         portfolio = Portfolio.objects.get(session_id=kwargs['session_id'])
 
         # portfolio = Portfolio.objects.get(session_id=request.GET['session_id'])
@@ -464,3 +466,14 @@ def send_message(request, pk):
     )
     messages = Message.objects.filter(author=room.authority_portfolio)
     return render(request, 'room.html', {'portfolio': portfolio, 'messages': messages, 'room_pk': room.pk})
+
+
+def product_list(request):
+    list_of = {
+        "Workflow AI":"Workflow AI",
+        "Wifi QR Code":"Wifi QR Code",
+         "User Experience Live": "User Experience Live",
+         "Social Media Automation":"Social Media Automation",
+         "Living Lab Scales 9":"Living Lab Scales 9" 
+        }
+    return JsonResponse({"product_list": list_of})

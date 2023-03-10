@@ -19,9 +19,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //   chat button toggler
 
-// chatBtn.addEventListener('click', ()=>{
-//     popup.classList.toggle('show');
-// })
+chatBtn.addEventListener("click", () => {
+  popup.classList.toggle("show");
+});
 
 // send msg
 submitBtn.addEventListener("click", () => {
