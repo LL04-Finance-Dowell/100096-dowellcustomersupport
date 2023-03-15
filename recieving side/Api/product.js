@@ -3,15 +3,12 @@ const fetchProductData = () => {
     .then((res) => res.json())
     .then((data) => {
       const productListDiv = document.getElementById("product-btn");
-      let html = "";
-     
+      let html = ""; 
       const showData = data.product_list;
       if (showData.length > 0) {
         for (const product of showData) {         
         
-          html += `
-            <li>${product}</li>
-          `;
+          html += `<li> ${product} <span class="badge bg-primary">4</span></li>`;
         }   
       }
       productListDiv.innerHTML = html;
