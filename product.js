@@ -1,5 +1,7 @@
 // show product
 
+// all product
+
 const fetchProductData = () => {
   fetch(`https://100096.pythonanywhere.com/product_list/`)
     .then((res) => res.json())
