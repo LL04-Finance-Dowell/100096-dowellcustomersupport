@@ -1,0 +1,17 @@
+.chat-box {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 400px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.chat-messages {
+  height: 220px; /* set a fixed height */
+  overflow-y: auto; /* add a scrollbar when content overflows */
+}
