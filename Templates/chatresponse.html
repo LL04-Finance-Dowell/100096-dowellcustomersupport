@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
   <head>
@@ -134,6 +135,18 @@
       type="application/rss+xml"
       title="UX Living Lab Chat &raquo; Feed"
       href="https://chat.dowellstore.org/feed/"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="{% static 'chat.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="{% static 'style.css' %}"
     />
     <link
       rel="alternate"
@@ -3955,7 +3968,7 @@
               data-element_type="section"
               data-settings='{"background_background":"classic"}'
             >
-              <div class="elementor-container elementor-column-gap-default">
+              <!-- <div class="elementor-container elementor-column-gap-default">
                 <div
                   class="has_ma_el_bg_slider elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-525645a jltma-glass-effect-no"
                   data-id="525645a"
@@ -5807,6 +5820,68 @@
                     </div>
                   </div>
                 </div>
+              </div> -->
+              <div id="chat-container">
+                <div id="active-room" style="display: none">
+                  {% for room in rooms %} {% if forloop.counter == 1 %}
+                  {{room.id }} {% endif %} {% endfor %}
+                </div>
+                {% csrf_token %}
+
+                <div id="search-container">
+                  <input type="text" placeholder="Search" />
+                </div>
+                <div id="conversation-list">
+                  {% for room in rooms %} {% if forloop.counter == 1 %}
+                  <div class="room_link conversation active">
+                    <img src="{% static 'img/avatar.png' %}" alt="room" />
+
+                    <div class="title-text">
+                      <h3>{{ room.id}}</h3>
+                      <h5>{{ room.room_name }}</h5>
+                    </div>
+                  </div>
+                  {% else %}
+                  <div class="room_link conversation">
+                    <img src="{% static 'img/avatar.png' %}" alt="room" />
+                    <div class="title-text">
+                      <h3>{{ room.id}}</h3>
+                      <h5>{{ room.room_name }}</h5>
+                    </div>
+                  </div>
+                  {% endif %} {% endfor %}
+                </div>
+                <div id="new-message-container">
+                  <a href="#">+</a>
+                </div>
+
+                <div id="chat-title">{{ session_id }}</div>
+                <div id="chat-message-list" class="chat-area">
+                  {% for message in messages %} {% if
+                  message.room.id==firstroom.id %} {% if msg.author.session_id
+                  == session_id %}
+                  <div class="out-msg">
+                    <span class="my-msg">{{msg.message}}</span>
+                  </div>
+                  {% else %}
+                  <div class="income-msg">
+                    <img src="/static/img/pic.png" class="avatar" alt="" />
+                    <span class="msg">{{msg.message}}</span>
+                  </div>
+                  {% endif %} {% endif %} {% endfor %}
+                </div>
+
+                <div id="chat-form">
+                  {{ session_id|json_script:"session_id" }}
+                  <input
+                    type="text"
+                    placeholder="type a message"
+                    id="chat-box-input"
+                  />
+                  <button id="chat-submit" class="submit">
+                    <i class="materal-icons">send</i>
+                  </button>
+                </div>
               </div>
             </section>
           </div>
@@ -6506,6 +6581,146 @@
           },
           !1
         );
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      window.onload = () => {
+        const activeRoom = document.getElementById("active-room");
+        const rooms = document.getElementsByClassName("room_link");
+        const csrftoken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+        const session_id = JSON.parse(
+          document.getElementById("session_id").textContent
+        );
+        console.log(rooms);
+
+        for (let room of rooms) {
+          room.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            const activeRoom = document.getElementById("active-room");
+
+            for (var rm of rooms) {
+              rm.setAttribute("class", "room_link conversation");
+            }
+            if (ev.target.className === "room_link conversation") {
+              ev.target.setAttribute("class", "room_link conversation active");
+              activeRoom.innerHTML =
+                ev.target.children[1].children[0].innerHTML;
+            } else {
+              if (ev.target.className === "title-text") {
+                ev.target.parentElement.setAttribute(
+                  "class",
+                  "room_link conversation active"
+                );
+                activeRoom.innerHTML = ev.target.children[0].innerHTML;
+              } else {
+                ev.target.parentElement.parentElement.setAttribute(
+                  "class",
+                  "room_link conversation active"
+                );
+                activeRoom.innerHTML =
+                  ev.target.parentElement.children[0].innerHTML;
+              }
+            }
+
+            const chatArea = document.getElementById("chat-message-list");
+            chatArea.innerHTML = "Loading ...";
+
+            $.ajax({
+              type: "GET",
+              url:
+                `https://100096.pythonanywhere.com/send/` +
+                activeRoom.innerHTML +
+                `/`,
+
+              success: function (response) {
+                console.log(response);
+                chatArea.innerHTML = "";
+
+                for (var messg of response.messages) {
+                  let temp = "";
+                  if (messg.author.session_id === session_id) {
+                    temp = `<div class="out-msg">
+                                    <!--img src="{% static 'img/pic.png' %}" class="avatar"-->
+                                    <span class="my-msg">${messg.message}</span>
+                                    </div>`;
+                  } else {
+                    temp = `<div class="income-msg">
+                                    <img src="{% static 'img/pic.png' %}" class="avatar">
+                                    <span class="msg">${messg.message}</span>
+                                    </div>`;
+                  }
+                  //var temp="<div class='container darker outcoming-msg'><b>"+response.messages[key].user+"</b><p>"+response.messages[key].value+"</p><span class='time-left'>"+response.messages[key].date+"</span></div>";
+                  chatArea.innerHTML += temp;
+                }
+              },
+              error: function (response) {
+                // alert('An error occurred')
+              },
+              headers: { "X-CSRFToken": csrftoken },
+            });
+          });
+        }
+
+        const chatSubmit = document.getElementById("chat-submit");
+        chatSubmit.onclick = () => {
+          const chatInput = document.getElementById("chat-box-input");
+          const chatArea = document.getElementById("chat-message-list");
+          const csrftoken = document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+          ).value;
+
+          let temp = `<div class="out-msg">
+                            <span class="my-msg">${chatInput.value}</span>
+                    <!--img src="{% static 'img/pic.png' %}" class="avatar"-->
+                    </div>`;
+
+          chatArea.insertAdjacentHTML("beforeend", temp);
+
+          console.log("submit button clicked");
+
+          $.ajax({
+            type: "POST",
+            url:
+              `https://100096.pythonanywhere.com/send/` +
+              activeRoom.innerHTML +
+              `/`,
+            POST: {
+              message: chatInput.value,
+              session_id: session_id,
+            },
+            data: {
+              message: chatInput.value,
+              session_id: session_id,
+            },
+
+            success: function (response) {
+              console.log(response);
+              /*$("#chat-area").empty();
+                                for (var key in response.messages)
+                                {
+                                    var temp2="<div class='container darker'><b>"+response.messages[key].user+"</b><p>"+response.messages[key].value+"</p><span class='time-left'>"+response.messages[key].date+"</span></div>";
+                                    $("#chat-area").append(temp);
+                                }*/
+            },
+            error: function (response) {
+              // alert('An error occurred')
+            },
+            headers: { "X-CSRFToken": csrftoken },
+          });
+          chatInput.value = "";
+        };
+      };
+
+      function onSelected() {
+        var id = document.getElementById("conversation-list");
+        if (id.style.display === "none") {
+          id.style.display = "block";
+        } else {
+          id.style.display = "none";
+        }
+      }
     </script>
   </body>
 </html>

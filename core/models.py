@@ -7,6 +7,11 @@ class Portfolio(models.Model):
     is_staff = models.BooleanField(default=False)
     session_id = models.CharField(max_length=32, blank=False, null=False)
     organization = models.CharField(max_length=200, blank=True, null=True)
+    username = models.CharField(max_length=200, blank=True, null=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
+    phone = models.CharField(max_length=200, blank=True, null=True)
+    userID = models.CharField(max_length=200, blank=True, null=True)
+
 
     def __str__(self):
         return f'{self.session_id} - {self.is_staff}'
