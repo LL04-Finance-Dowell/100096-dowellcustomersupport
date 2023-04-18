@@ -43,6 +43,8 @@ def product_list_object():
 def product_list1():
     return ADMIN_PRODUCT
 
+def product_list2():
+    return PRODUCT_LIST
 
 
 
@@ -86,8 +88,8 @@ def dowell_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME
 
 @dowell_login_required
 def test(request):
-    print("Logged in as: ", request.session["user_name"])
-    return JsonResponse({"status":"it is working"})
+    print("Logged in as: ", request.session["dowell_user"]["userinfo"]["username"])
+    return JsonResponse({"status":"it is working", "session_id": request.session["dowell_user"]["userinfo"]["username"]})
 
 
 
@@ -111,6 +113,7 @@ def jsonify_message_object(mess_obj):
 
 
 
+
 #   Extension sender side handling
 @xframe_options_exempt
 @dowell_login_required
@@ -127,7 +130,7 @@ def extension_chat_box_view(request, *args, **kwargs):
                 email = request.session["dowell_user"]["userinfo"]["email"],
                 phone = request.session["dowell_user"]["userinfo"]["phone"],
                 userID = request.session["dowell_user"]["userinfo"]["userID"],
-                organization = request.session["dowell_user"]["portfolio_info"][0]["orgID"],
+                organization = request.session["dowell_user"]["portfolio_info"][0]["org_id"],
                 dowell_logged_in = True
             )
 
@@ -150,7 +153,6 @@ def extension_chat_box_view(request, *args, **kwargs):
 
 
 # mobile API view handle
-@dowell_login_required
 def createRoomAPI(request, *args, **kwargs):
     #   print(product, session_id)
 
@@ -161,7 +163,7 @@ def createRoomAPI(request, *args, **kwargs):
         return JsonResponse({'error': 'session_id length must be more then 8 characters.'})
 
     try:
-        portfolio = Portfolio.objects.filter(userID=request.session["dowell_user"]["userinfo"]["userID"]).first()
+        portfolio = Portfolio.objects.filter(userID=request.session["dowell_user"]["userinfo"]["userID"]).order_by("-id")[0]
     except Portfolio.DoesNotExist:
         portfolio = Portfolio.objects.create(
             portfolio_name=request.session["dowell_user"]["userinfo"]["username"],
@@ -170,7 +172,7 @@ def createRoomAPI(request, *args, **kwargs):
             email = request.session["dowell_user"]["userinfo"]["email"],
             phone = request.session["dowell_user"]["userinfo"]["phone"],
             userID = request.session["dowell_user"]["userinfo"]["userID"],
-            organization = request.session["dowell_user"]["portfolio_info"][0]["orgID"],
+            organization = request.session["dowell_user"]["portfolio_info"][0]["org_id"],
             dowell_logged_in = True
         )
     room = Room.objects.filter(authority_portfolio__id=portfolio.id, product=kwargs['product'].lower()).first()
@@ -211,6 +213,17 @@ def chat_box_view(request, *args, **kwargs):
         room.save()
 
     messages = Message.objects.filter(room=room)
+
+    if len(messages) == 0 :
+        Message.objects.create(
+            room=room,
+            message="Hey, How may I help you?",
+            author=portfolio,
+            read=True,
+            side=True,
+            message_type="TEXT"
+        )
+        messages = Message.objects.filter(room=room)
     return render(request, 'chat_box.html', {'session_id': request.GET['session_id'], 'product': kwargs['product'], 'portfolio': portfolio, 'messages': messages, 'room_pk': room.id})
 
 
@@ -221,28 +234,32 @@ def chat_box_view(request, *args, **kwargs):
 def send_message_api(request, pk):
     message = str()
     session_id = str()
-    print("PK :", pk)
+    message_type = str()
     room = Room.objects.get(pk=int(pk))
     if request.POST :
         message = request.POST.get('message')
         session_id = request.POST.get('session_id')
+        message_type = request.POST.get('message_type')
     else:
         try:
             body = request.body.decode('utf8').replace("'", '"')
             message = json.loads(body)['message']
             session_id = json.loads(body)['session_id']
+            message_type = json.loads(body)['message_type']
         except:
             pass
         print("Session_id :", session_id , ", message : ", message, request.POST)
     if message :
         try:
+            msg_type = message_type if message_type else "TEXT"
             portfolio = Portfolio.objects.filter(session_id=session_id).last()
             msg = Message.objects.create(
                 room=room,
                 message=message,
                 author=portfolio,
                 read=False,
-                side=False if room.room_name == session_id else True
+                side=False,
+                message_type=msg_type
             )
             msg.save()
         except Portfolio.DoesNotExist:
@@ -252,6 +269,64 @@ def send_message_api(request, pk):
     message_list = [jsonify_message_object(message) for message in messages]
     return JsonResponse({'portfolio': session_id, 'messages': message_list, 'room_pk': room.id})
 
+
+
+
+# This is new msg api with dowell login
+def login_check(session_id):
+    url = 'https://100093.pythonanywhere.com/api/userinfo/'
+    response = requests.post(url, data={'session_id': session_id})
+    try:
+        response=response.json()
+        if response["userinfo"]["username"]:
+            return response
+    except:
+        return JsonResponse({'status': False, 'error': 'Wrong session_id'})
+
+
+
+
+@csrf_exempt
+@dowell_login_required
+def send_msg_api_2(request, pk):
+    message = str()
+    session_id = None
+    print("PK :", pk)
+    room = Room.objects.get(pk=int(pk))
+    if request.POST :
+        message = request.POST.get('message')
+        session_id = request.POST.get('session_id')
+        message_type = request.POST.get('message_type')
+
+    else:
+        try:
+            body = request.body.decode('utf8').replace("'", '"')
+            message = json.loads(body)['message']
+            session_id = json.loads(body)['session_id']
+            message_type = json.loads(body)['message_type']
+        except:
+            pass
+        print("Session_id :", session_id , ", message : ", message, request.POST)
+
+    if session_id:
+        dowell_user = login_check(session_id)
+        if message :
+            try:
+                portfolio = Portfolio.objects.filter(userID=dowell_user["userinfo"]["userID"]).order_by("-id")[0]
+                msg = Message.objects.create(
+                    room=room,
+                    message=message,
+                    author=portfolio,
+                    read=False,
+                    side=False if room.room_name == session_id else True,
+                    message_type=message_type
+                )
+                msg.save()
+            except Portfolio.DoesNotExist:
+                return JsonResponse({'Error': '404', 'messages': 'Wrong session id user Not found.'})
+    messages = Message.objects.filter(room=room)
+    message_list = [jsonify_message_object(message) for message in messages]
+    return JsonResponse({'portfolio': session_id, 'messages': message_list, 'room_pk': room.id})
 
 
 
@@ -277,7 +352,7 @@ def main_support_page(request, *args, **kwargs):
             email = request.session["dowell_user"]["userinfo"]["email"],
             phone = request.session["dowell_user"]["userinfo"]["phone"],
             userID = request.session["dowell_user"]["userinfo"]["userID"],
-            organization = request.session["dowell_user"]["portfolio_info"][0]["orgID"],
+            organization = request.session["dowell_user"]["portfolio_info"][0]["org_id"],
             dowell_logged_in = True
         )
         portfolio.save()
@@ -311,9 +386,10 @@ def main_living_lab_support_page(request, *args, **kwargs):
             email = request.session["dowell_user"]["userinfo"]["email"],
             phone = request.session["dowell_user"]["userinfo"]["phone"],
             userID = request.session["dowell_user"]["userinfo"]["userID"],
-            organization = request.session["dowell_user"]["portfolio_info"][0]["orgID"],
+            organization = request.session["dowell_user"]["portfolio_info"][0]["org_id"],
             dowell_logged_in = True
         )
+        portfolio.save()
 
     rooms = Room.objects.all()
     for room in rooms:
@@ -321,12 +397,12 @@ def main_living_lab_support_page(request, *args, **kwargs):
         if len(messages) == 0:
             room.delete()
 
-    rooms = Room.objects.filter(product=product_list1()[0].lower()).order_by("-id")
+    rooms = Room.objects.filter(product=product_list2()[0].lower()).order_by("-id")
     try:
         messages = Message.objects.filter(room=rooms[0].id)
     except:
         messages = Message.objects.none()
-    return render(request, 'rt_chat_response1.html', {'product_list': product_list1(), 'firstroom': rooms.first(), 'portfolio': portfolio, 'rooms': rooms, 'messages': messages, 'session_id': request.session['session_id']})
+    return render(request, 'rt_chat_response.html', {'product_list': product_list2(), 'firstroom': rooms.first(), 'portfolio': portfolio, 'rooms': rooms, 'messages': messages, 'session_id': request.session['session_id']})
 
 
 
@@ -350,6 +426,57 @@ def room_list(request, *agrs, **kwargs):
         return JsonResponse({'rooms': rm_list, 'firstroom': firstroom, 'messages': [jsonify_message_object(message) for message in Message.objects.filter(room_id=frm_id)]})
     except Room.DoesNotExist:
         return JsonResponse({'rooms': []})
+
+
+
+@xframe_options_exempt
+@dowell_login_required
+def chatbox_withDU_view(request, *args, **kwargs):
+    context = {}
+    portfolio = None
+    #   session_id = request.GET.get('session_id')
+    #   url = 'https://100093.pythonanywhere.com/api/userinfo/'
+    #   response = requests.post(none()rl, data={'session_id': session_id})
+    #   response=response.json()
+
+    print("login :", request.session["dowell_user"]["portfolio_info"][0])
+    try:
+        portfolio = Portfolio.objects.filter(userID=request.session["dowell_user"]["userinfo"]["userID"]).order_by("-id")[0]
+    except Portfolio.DoesNotExist:
+        portfolio = Portfolio.objects.create(
+            portfolio_name=request.session["dowell_user"]["userinfo"]["username"],
+            session_id=request.session["dowell_user"]["userinfo"]["session_id"],
+            username = request.session["dowell_user"]["userinfo"]["username"],
+            email = request.session["dowell_user"]["userinfo"]["email"],
+            phone = request.session["dowell_user"]["userinfo"]["phone"],
+            userID = request.session["dowell_user"]["userinfo"]["userID"],
+            organization = request.session["dowell_user"]["portfolio_info"][0]["org_id"],
+            dowell_logged_in = True
+        )
+    room = Room.objects.filter(authority_portfolio__id=portfolio.id, product=kwargs['product'].lower(), company=request.session["dowell_user"]["portfolio_info"][0]["org_id"]).first()
+    if not room :
+        room = Room.objects.create(
+            room_name=portfolio.portfolio_name,
+            room_id= portfolio.session_id,
+            authority_portfolio=portfolio,
+            product=kwargs['product'].lower()
+        )
+    messages = Message.objects.filter(room=room)
+
+    if len(messages) == 0:
+        Message.objects.create(
+            room=room,
+            message="Hey, How may I help you?",
+            author=portfolio,
+            read=True,
+            side=True,
+            message_type="TEXT"
+        )
+        messages = Message.objects.filter(room=room)
+    context = {'session_id': request.GET['session_id'], 'product': kwargs['product'], 'portfolio': portfolio, 'messages': messages, 'room_pk': room.id}
+    return render(request, 'chat_box.html', context)
+
+
 
 
 
