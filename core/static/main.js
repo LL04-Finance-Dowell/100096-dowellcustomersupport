@@ -7,25 +7,25 @@ const emojiBtn = document.querySelector('#emoji-btn');
 const picker = new EmojiButton();
 
 
-// Emoji selection  
+// Emoji selection
 window.addEventListener('DOMContentLoaded', () => {
 
     picker.on('emoji', emoji => {
       document.querySelector('input').value += emoji;
     });
-  
+
     emojiBtn.addEventListener('click', () => {
       picker.togglePicker(emojiBtn);
     });
-  });        
+  });
 
-//   chat button toggler 
+//   chat button toggler
 
 chatBtn.addEventListener('click', ()=>{
     popup.classList.toggle('show');
 })
 
-// send msg 
+// send msg
 submitBtn.addEventListener('click', ()=>{
     let userInput = inputElm.value;
     let temp = `<div class="out-msg">
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.modal');
   var instances = M.Modal.init(elems, {opacity: 0.6});
 
-});  
+});
 
 document.addEventListener('DOMContentLoaded', function() {
 var elems = document.querySelectorAll('.tooltipped');

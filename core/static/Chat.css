@@ -1,4 +1,4 @@
- *{
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -20,6 +20,14 @@ body {
     display: grid;
     place-items: center;
 }
+
+.scroller {
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin;
+}
+
+
 
 #chat-container {
     display: grid;
@@ -113,7 +121,7 @@ body {
 	padding-left: 5px;
 	white-space: nowrap;
 	overflow-x: hidden;
-	text-overflow: ellipsis; 
+	text-overflow: ellipsis;
 }
 
 
@@ -194,7 +202,7 @@ body {
 
 .you-message {
 	justify-content: end;
-	
+
 }
 
 .you-message .message-content {
@@ -261,7 +269,7 @@ body {
 	width: 580px;
     height: 40px;
 	outline: none;
-	
+
 	border: 2px solid #ddd;
 	color: #330;
 	border-radius: 6px;

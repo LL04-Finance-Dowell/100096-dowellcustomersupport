@@ -3,69 +3,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chat App</title>
+    <title>Admin view</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'Chat.css' %}" >
 	<script defer src="{% static 'chat.js' %}"></script>
 </head>
-<body>
-    <div id="chat-container">
-        <div id="search-container">
-        	<input type="text" placeholder="Search" >
-
-        </div>
-        <div id="conversation-list">
-        	<div class="conversation active">
-        		<img src="{% static 'img/avatar.png' %}" alt="room">
-        		<div class="title-text">
-        			Room 001
-        		</div>
-        	</div>
-
-        	<div class="conversation">
-        		<img src="{% static 'img/avatar.png' %}" alt="room">
-        		<div class="title-text">
-        			Room 002
-        		</div>
-        		
-        	</div>
-
-        	<div class="conversation">
-        		<img src="{% static 'img/avatar.png' %}" alt="room">
-        		<div class="title-text">
-        			Room 003
-        		</div>
-        		
-        	</div>
-
-        	<div class="conversation">
-        		<img src="{% static 'img/avatar.png' %}" alt="room">
-        		<div class="title-text">
-        			Room 004
-        		</div>
-        		
-        	</div>
-
-        </div>
-        <div id="new-message-container">
-        	<a href="#">+</a>
-
-        </div>
-        <div id="chat-title">
-            
-
-        </div>
-        <div id="chat-message-list">
-        	
-		
-
-        </div>
-        <div id="chat-form">
-        	<input type="text" placeholder="type a message" id="chat-box"/>
-			<button class="submit"><i class="materal-icons">send</i></button>
-
-        </div>
-
-
-    </div>
-</body>
-</html>
+<body>    
+    
+	<body>    
+		<div id="chat-container">
+			<div id="search-container">
+				<h1>Customer Support Centre</h1>
+	
+			</div>
+			<div id="conversation-list">
+				<button class="conversation active" style="width: 100%" onclick="onSelected()">
+					<img src="img/avatar.png" alt="prdt1">
+					<div class="title-text">
+						Product 001
+					</div>
+	
+				</button>
+				
+	
+	
+				<button class="conversation" style="width: 100%" onclick="Selected()">
+					<img src="img/avatar.png" alt="prdt2">
+					<div class="title-text">
+						Product 002
+					</div>
+	
+				</button>
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="prdt3">
+					<div class="title-text">
+						Product 003
+					</div>
+					
+				</button>
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="prdt4">
+					<div class="title-text">
+						Product 004
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="prdt4">
+					<div class="title-text">
+						Product 005
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="prdt4">
+					<div class="title-text">
+						Product 006
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="prdt4">
+					<div class="title-text">
+						Product 007
+					</div>
+				</button>
+				<div id="search-container">
+					<input type="text" placeholder="Search" ></div>
+	
+			</div>
+			<div id="new-message-container">
+				<a href="#">+</a>
+	
+			</div>
+		<div id="chat-container">
+			<div id="search-container">
+				
+			</div>
+			
+			<script>
+				function onSelected(){
+					var id = document.getElementById("conversation-list1");
+					if(id.style.display === "none"){
+						id.style.display = "block";
+					}
+					else{
+						id.style.display = "none";
+					}
+				}
+	
+				function Selected(){
+					var id = document.getElementById("conversation-list2");
+					if(id.style.display === "none"){
+						id.style.display = "block";
+					}
+					else{
+						id.style.display = "none";
+					}
+				}
+	
+			</script>
+			<div id="conversation-list1" class="rooms" style="display: none;">
+				<button class="conversation active" style="width: 100%">
+					<img src="img/avatar.png" alt="room1">
+					<div class="title-text">
+						Room 001
+					</div>
+					
+				</button>
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room2">
+					<div class="title-text">
+						Room 002
+					</div>
+				</button>
+	
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room3">
+					<div class="title-text">
+						Room 003
+					</div>
+				</button>
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room4">
+					<div class="title-text">
+						Room 004
+					</div>
+				</button>
+	
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room5">
+					<div class="title-text">
+						Room 005
+					</div>
+					
+				</button>
+				
+	
+	
+			</div>
+			<div id="conversation-list2" class="rooms" style="display: none;">
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room2">
+					<div class="title-text">
+						Room 006
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room2">
+					<div class="title-text">
+						Room 007
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room2">
+					<div class="title-text">
+						Room 008
+					</div>
+				</button>
+				<button class="conversation" style="width: 100%">
+					<img src="img/avatar.png" alt="room2">
+					<div class="title-text">
+						Room 009
+					</div>
+				</button>
+			</div>
+			
+			<div id="new-message-container">
+				
+	
+			</div>
+			<div id="chat-title">
+				Room 001
+	
+			</div>
+			<div id="chat-message-list">
+				
+			
+	
+			</div>
+			<div id="chat-form">
+				<input type="text" placeholder="type a message" id="chat-box"/>
+				<button class="submit"><i class="materal-icons">send</i></button>
+	
+			</div>
+	
+	
+		</div>
+	</body>
+	</html>

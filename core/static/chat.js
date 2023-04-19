@@ -1,4 +1,3 @@
-
 let msg_list=document.getElementById('chat-message-list')
 document.addEventListener('keypress', logKey);
 
@@ -22,7 +21,7 @@ function createYouDiv() {
     containerx.appendChild(container);
     document.getElementById("chat-message-list").appendChild(containerx);
 
-}  
+}
 
 function createOtherDiv() {
 
@@ -44,7 +43,7 @@ function createOtherDiv() {
     containerx.appendChild(container);
     document.getElementById("chat-message-list").appendChild(containerx);
 
-}  
+}
 
 let cnt=1
 function logKey(e) {
@@ -61,4 +60,3 @@ function logKey(e) {
        console.log(randomName);
    }
   }
-
