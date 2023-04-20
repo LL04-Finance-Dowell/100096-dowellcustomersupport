@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ class="first"<!DOCTYPE html>
 <html dir="ltr" lang="en-US"
 	prefix="og: https://ogp.me/ns#" >
 <head>
@@ -411,22 +411,29 @@ class="hfeed site" id="page">
     ></script>
 
 <ul class="product-btn">
-      <li>Workflow AI <span class="badge rounded-circle bg-primary">4</span></li>
-      <li>Wifi QR Code <span class="badge rounded-circle bg-primary">6</span></li>
-      <li>User Experience Live <span class="badge rounded-circle bg-primary">7</span></li>
-      <li>Social Media Automation</li>
-      <li>Living Lab Scales <span class="badge rounded-circle bg-primary">9</span></li>
-      <li>Logo Scan</li>
-      <li>Living Lab Chat <span class="badge rounded-circle bg-primary">2</span></li>
-      <li>Customer Experience</li>
-      <li>Living Lab Admin</li>
-      <li>Team Management</li>
-      <li>Living Lab Monitoring</li>
-      <li>Sales Agent</li>
-      <li>Permutation Calculator</li>
-      <li>DoWell CSC <span class="badge rounded-circle bg-primary">1</span></li>
-      <li>Secure Repositories</li>
-      <li>Secure Data</li>
+	<style>
+    .first:hover,
+    .first.active {
+	   opacity: 1 !important;
+	   box-shadow: 0 4px 8px rgba(0,0,0,.9);
+    }
+  </style>
+      <li class="first active">Workflow AI <span class="badge rounded-circle bg-primary">4</span></li>
+      <li class="first">Wifi QR Code <span class="badge rounded-circle bg-primary">6</span></li>
+      <li class="first">User Experience Live <span class="badge rounded-circle bg-primary">7</span></li>
+      <li class="first">Social Media Automation</li>
+      <li class="first">Living Lab Scales <span class="badge rounded-circle bg-primary">9</span></li>
+      <li class="first">Logo Scan</li>
+      <li class="first">Living Lab Chat <span class="badge rounded-circle bg-primary">2</span></li>
+      <li class="first">Customer Experience</li>
+      <li class="first">Living Lab Admin</li>
+      <li class="first">Team Management</li>
+      <li class="first">Living Lab Monitoring</li>
+      <li class="first">Sales Agent</li>
+      <li class="first">Permutation Calculator</li>
+      <li class="first">DoWell CSC <span class="badge rounded-circle bg-primary">1</span></li>
+      <li class="first">Secure Repositories</li>
+      <li class="first">Secure Data</li>
     </ul>		</div>
 				</div>
 					</div>
@@ -1194,5 +1201,17 @@ var jltma_data_table_vars = {"lengthMenu":"Display _MENU_ records per page","zer
 			<script>
 			/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())},!1);
 			</script>
+
+			<script>
+const listItems = document.querySelectorAll('.product-btn li');
+listItems.forEach(function(item) {
+  item.addEventListener('click', function() {
+    listItems.forEach(function(item) {
+      item.classList.remove('active');
+    });
+    this.classList.add('active');
+  });
+});
+    </script>
 				</body>
 </html>
