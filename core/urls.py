@@ -16,6 +16,9 @@ urlpatterns =[
 
     re_path(r'^chat/(?P<product>[0-9\w-]+)/(?:session_id=(?P<session_id>[a-z0-9])/)?$', views.chat_box_view, name='chat-box'),
     #   re_path(r'^support-chat-box/(?P<product>[0-9\w-]+)/(?:session_id=(?P<session_id>[a-z0-9]{32})/)?$', views.support_chat_box_view, name='support-chat-box'),
+    
+    #Update message API ednpoint
+    path('api/edit_message/<int:pk>/', edit_message,name='edit_message')
 
 ]
 
