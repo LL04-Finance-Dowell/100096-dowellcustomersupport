@@ -237,6 +237,25 @@ def test(request):
 
 
 
+# Update message API
+@csrf_exempt
+def edit_message(request, pk):
+    if request.method=='PUT':
+        try:
+            message=Message.objects.get(pk=pk)
+        except Message.DoesNotExist:
+            return JsonResponse({'error': 'Message not found'},status=404)
+        
+        new_message=request.POST.get('message')
+        if new_message is None:
+            return JsonResponse({'error':'No Message provided'},status=400)
+        
+        message.message=new_message
+        message.save()
+
+        return JsonResponse({'message': 'Message updated Successfully'})
+    return JsonResponse({'error':'Invalid method'}, status=405)
+
 
 
 
